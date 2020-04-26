@@ -1,14 +1,13 @@
 package controller;
 
-import android.util.Log;
 import android.view.View;
 
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
 import com.google.gson.Gson;
 
-import adapter.PlaylistAdapter;
-import model.Playlist;
+import adapter.PlaylistCardAdapter;
+import model.PlaylistCard;
 import model.PlaylistSearchResult;
 import util.Constants;
 import util.HTTPSWebUtilDomi;
@@ -16,14 +15,14 @@ import util.HTTPSWebUtilDomi;
 public class MainController implements View.OnClickListener, HTTPSWebUtilDomi.OnResponseListener {
     private MainActivity activity;
     private HTTPSWebUtilDomi httpsUtil;
-    private PlaylistAdapter adapter;
+    private PlaylistCardAdapter adapter;
     public MainController(MainActivity activity) {
         this.activity = activity;
         activity.getSearchBtn().setOnClickListener(this);
         httpsUtil = new HTTPSWebUtilDomi();
         httpsUtil.setListener(this);
 
-        adapter = new PlaylistAdapter();
+        adapter = new PlaylistCardAdapter();
         activity.getPlaylistTable().setAdapter(adapter);
     }
 
@@ -31,7 +30,7 @@ public class MainController implements View.OnClickListener, HTTPSWebUtilDomi.On
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.searchBtn:
-                String url = Constants.SEARCH_PLAYLIST_URL+activity.getSearchText().getText().toString();
+                String url = Constants.SEARCH_PLAYLISTS_URL +activity.getSearchText().getText().toString();
                 new Thread(
                         ()->{
                             httpsUtil.GETrequest(Constants.SEARCH_CALLBACK,url);
@@ -48,7 +47,7 @@ public class MainController implements View.OnClickListener, HTTPSWebUtilDomi.On
                 adapter.clearList();
                 Gson gson = new Gson();
                 PlaylistSearchResult result = gson.fromJson(response, PlaylistSearchResult.class);
-                for(Playlist p : result.getData()){
+                for(PlaylistCard p : result.getData()){
                     activity.runOnUiThread(
                             ()->{
                                 adapter.addPlaylist(p);

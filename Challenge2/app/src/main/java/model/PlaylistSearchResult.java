@@ -1,20 +1,20 @@
 package model;
 
 public class PlaylistSearchResult {
-    private Playlist data[];
+    private PlaylistCard data[];
 
-    public PlaylistSearchResult(Playlist[] data) {
+    public PlaylistSearchResult(PlaylistCard[] data) {
         this.data = data;
     }
 
     public PlaylistSearchResult() {
     }
 
-    public Playlist[] getData() {
+    public PlaylistCard[] getData() {
         return data;
     }
 
-    public void setData(Playlist[] data) {
+    public void setData(PlaylistCard[] data) {
         this.data = data;
     }
 }

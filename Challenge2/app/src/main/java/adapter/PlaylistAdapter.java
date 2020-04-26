@@ -1,75 +1,102 @@
 package adapter;
 
+import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
-import com.example.myapplication.PlaylistCard;
 import com.example.myapplication.R;
+import com.example.myapplication.SongDetail;
 
 import java.util.ArrayList;
+import java.util.Date;
 
-import model.Playlist;
+import model.SongCardM;
 
-public class PlaylistAdapter extends BaseAdapter {
-    private ArrayList<Playlist> playlists;
+public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHolder> {
+    private ArrayList<SongCardM> songs;
 
-    public PlaylistAdapter() {
-        this.playlists = new ArrayList<>();
+    public PlaylistAdapter(ArrayList<SongCardM> songs) {
+        this.songs = songs;
+    }
+
+
+    @NonNull
+    @Override
+    public PlaylistAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        Context context = parent.getContext();
+        LayoutInflater inflater = LayoutInflater.from(context);
+
+        // Inflate the custom layout
+        View contactView = inflater.inflate(R.layout.activity_song_card, parent, false);
+
+        // Return a new holder instance
+        ViewHolder viewHolder = new ViewHolder(contactView);
+        return viewHolder;
     }
 
     @Override
-    public int getCount() {
-        return playlists.size();
-    }
+    public void onBindViewHolder(@NonNull PlaylistAdapter.ViewHolder holder, int position) {
+        SongCardM song = songs.get(position);
 
-    @Override
-    public Object getItem(int position) {
-        return playlists.get(position);
-    }
+        TextView songName = holder.songNameTxt;
+        TextView songArtist = holder.songArtistTxt;
+        TextView songDate = holder.songDatetxt;
+        ImageView img = holder.img;
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-    public void addPlaylist(Playlist p){
-        playlists.add(p);
-        //el notify es como un observer ya implementado que le hace saber que se añadieron datos
-        notifyDataSetChanged();
-    }
-    public void clearList(){
-        playlists.clear();
-    }
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View card = inflater.inflate(R.layout.activity_playlist_card, null,false);
-
-        TextView name = card.findViewById(R.id.name);
-        TextView username = card.findViewById(R.id.userName);
-        TextView size = card.findViewById(R.id.size);
-        ImageView img = card.findViewById(R.id.image);
-
-        name.setText(playlists.get(position).getTitle());
-        username.setText(playlists.get(position).getUser().getName());
-        size.setText(playlists.get(position).getNb_tracks());
-        Glide.with(card).load(
-                playlists.get(position).getPicture_small()
+        songName.setText(song.getTitle());
+        songArtist.setText(song.getArtist().getName());
+        songDate.setText(new Date(Long.parseLong(song.getTime_add())).toString());
+        if(song.getAlbum()!= null)
+        Glide.with(holder.itemView).load(
+                song.getAlbum().getCover_small()
         ).centerCrop().into(img);
-
-        card.setOnClickListener(
-                (v) ->{
-                    Log.e("jejej","jjejje");
+        holder.itemView.setOnClickListener(
+                (v)->{
+                    Intent i = new Intent(holder.itemView.getContext(), SongDetail.class);
+                    i.putExtra("song",song);
+                    holder.itemView.getContext().startActivity(i);
                 }
         );
-        return card;
+
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return songs.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+
+        public TextView songNameTxt, songArtistTxt,songDatetxt;
+        public ImageView img;
+
+        public ViewHolder(View itemView) {
+
+            super(itemView);
+
+            songNameTxt = (TextView) itemView.findViewById(R.id.songNameTxt);
+            songArtistTxt = (TextView) itemView.findViewById(R.id.songArtistTxt);
+            songDatetxt = itemView.findViewById(R.id.songDateTxt);
+            img = itemView.findViewById(R.id.img);
+
+
+        }
+    }
+
+    public ArrayList<SongCardM> getSongs() {
+        return songs;
+    }
+
+    public void setSongs(ArrayList<SongCardM> songs) {
+        this.songs = songs;
     }
 }

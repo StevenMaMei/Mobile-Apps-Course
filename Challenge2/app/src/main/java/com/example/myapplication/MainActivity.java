@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         playlistTable = findViewById(R.id.playlistTable);
 
         controller = new MainController(this);
+
     }
 
 

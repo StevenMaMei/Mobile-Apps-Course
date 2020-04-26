@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
         authButton.setOnClickListener(
                 (v) ->{
+                    Intent in = new Intent(this,AuthActivity.class
                     Intent i = new Intent(this, AuthActivity.class);
                     i.putExtra("user", user);
                     startActivityForResult(i,11);

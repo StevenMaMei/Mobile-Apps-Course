@@ -1,26 +1,19 @@
 package model;
 
 public class Playlist {
-    private String id,title,picture_small;
-    private String nb_tracks;
-    private User user;
-    public Playlist() {
-    }
+    private String id,title,description, nb_tracks,picture_medium;
+    private Track tracks;
 
-    public Playlist(String id, String title, String picture_small, String nb_tracks, User user) {
+    public Playlist(String id, String title, String description, String nb_tracks, String picture_medium, Track tracks) {
         this.id = id;
         this.title = title;
-        this.picture_small = picture_small;
+        this.description = description;
         this.nb_tracks = nb_tracks;
-        this.user = user;
+        this.picture_medium = picture_medium;
+        this.tracks = tracks;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
+    public Playlist() {
     }
 
     public String getId() {
@@ -39,12 +32,12 @@ public class Playlist {
         this.title = title;
     }
 
-    public String getPicture_small() {
-        return picture_small;
+    public String getDescription() {
+        return description;
     }
 
-    public void setPicture_small(String picture_small) {
-        this.picture_small = picture_small;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getNb_tracks() {
@@ -53,5 +46,21 @@ public class Playlist {
 
     public void setNb_tracks(String nb_tracks) {
         this.nb_tracks = nb_tracks;
+    }
+
+    public String getPicture_medium() {
+        return picture_medium;
+    }
+
+    public void setPicture_medium(String picture_medium) {
+        this.picture_medium = picture_medium;
+    }
+
+    public Track getTracks() {
+        return tracks;
+    }
+
+    public void setTracks(Track tracks) {
+        this.tracks = tracks;
     }
 }
